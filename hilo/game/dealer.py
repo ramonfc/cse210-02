@@ -1,4 +1,5 @@
 from game.card import Card
+import random
 
 class Dealer:
     """A dealer of the game. 
@@ -26,6 +27,7 @@ class Dealer:
         self.second_card = 0
         self.points = 300
         self.guess = ""
+        self.risk = 0
     
     def start_game(self):
         """Starts the game by running the main game loop.
@@ -33,7 +35,11 @@ class Dealer:
         Args:
             self (Dealer): an instance of Dealer.
         """
+        
+            
         while self.is_playing:
+            
+            self.gamble() 
             self.get_guess()
             self.do_updates()
             self.do_outputs()
@@ -49,7 +55,6 @@ class Dealer:
             self.first_card = self.card.value
         else:
             self.first_card = self.second_card
-
         self.card.draw()
         self.second_card = self.card.value
         print(f"The card is {self.first_card}")
@@ -61,8 +66,14 @@ class Dealer:
         Args:
             self (Dealer): An instance of Dealer.
         """
+        # if self.points <= 0:
+        #     self.is_playing = False
+            
+        print(self.points)
+            
         draw = self.validateInput("Play again? [y/n]: ", "yn")
         print("")
+        
         self.is_playing = (draw == "y")
 
     def do_updates(self):
@@ -72,16 +83,74 @@ class Dealer:
             self (Dealer): An instance of Dealer.
         """
         if not self.is_playing:
-            return 
+            return exit() 
         
         if self.first_card > self.second_card:
             correc_answer = "l"
         else:
             correc_answer = "h"
             
+        
+            
         if correc_answer == self.guess:
-            self.points += 100
-        else: self.points -= 75
+            self.points += self.bet()
+            print('you guessed it correct')
+        else: 
+            self.points -= self.bet()
+            print('you guessed incorrectly')
+            
+            
+        
+            
+            
+        
+    def gamble(self):
+        '''This will prompt the player to wager points for their answer.'''
+        self.risk = int(input('How many points would you like to risk? '))
+        
+    
+    def bet(self):
+        ''' The minimum wager is 75 points and the maximum wager is the player total points.
+        If the player incorrectly inputs then it will automatically be at least 105 points that will be wagered then multiplied by the multiplyer if it applies.'''
+        
+        bet = 0
+        minimum_bet = 0
+        bonus =  self.chance()
+        
+        if self.risk >= minimum_bet:
+            
+            if self.risk > self.points:
+                print(f'You must be very confident because you exceeded the amount you wager!  Here, your wager will be {self.points}')
+                bet = self.points * bonus
+                return bet
+                
+            else:
+                bet = self.risk * bonus
+                print(f'Your wager is acceptable.  You wager... {bet}')
+                return bet
+                
+        else:
+            bet += minimum_bet * bonus
+            return bet    
+        
+    def chance(self):
+        '''This will determine by random if the player will get a bonus multiplier to increase the potential points earned or lost. 
+        How this is determined is a random number between 1 and 10.  Current probablity for multiplier to active is 30% '''
+        
+        multiply = 0
+        random_chance = random.randint(1,10)
+        if random_chance == 3 or random_chance == 6 or random_chance == 9:
+            print('It is you lucky day!  You get a 2x MULTIPLIER!!!')
+            multiply = 2
+            return multiply
+            
+        else:
+            multiply = 1
+            return multiply
+    
+        
+        
+        
 
     def do_outputs(self):
         """Displays the dice and the points. Also asks the player if they want to roll again.
@@ -95,8 +164,10 @@ class Dealer:
 
         if self.points <= 0:
             self.is_playing = False
+            
 
-        self.get_play_again()
+        else:
+            self.get_play_again()
 
 
     def validateInput(self, message, expected_values):
@@ -119,3 +190,5 @@ class Dealer:
                 print("Bad input. Try again")
                 user_input = input(message)
                 repeat = True
+                
+        return guess
