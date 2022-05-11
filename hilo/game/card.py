@@ -7,6 +7,7 @@ class Card:
 
     Attributes:
         value (int): The value of the card.
+        draw: choose random number from 1 to 13 
     """
     def __init__(self):
         """Constructs a new instance of Card and has an attribute value.
