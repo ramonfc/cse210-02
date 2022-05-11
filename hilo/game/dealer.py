@@ -53,7 +53,7 @@ class Dealer:
         self.card.draw()
         self.second_card = self.card.value
         print(f"The card is {self.first_card}")
-        self.guess = input("Higher or lower? [h/l]: ")
+        self.guess = self.validateInput("Higher or lower? [h/l]: ", "hl") 
     
     def get_play_again(self):
         """Ask the player if they want to play again.
@@ -61,7 +61,7 @@ class Dealer:
         Args:
             self (Dealer): An instance of Dealer.
         """
-        draw = input("Play again? [y/n]: ")
+        draw = self.validateInput("Play again? [y/n]: ", "yn")
         print("")
         self.is_playing = (draw == "y")
 
@@ -97,3 +97,25 @@ class Dealer:
             self.is_playing = False
 
         self.get_play_again()
+
+
+    def validateInput(self, message, expected_values):
+        """Validate if the user input is an expected input
+
+        Args: 
+        self (Dealer): An instance of Dealer.
+        message (str): message to ask to the user
+        expected_values (str): possible right options
+        
+        """
+
+        user_input = input(message)
+        repeat = True
+        while repeat == True:
+            if user_input in expected_values:   
+                guess = user_input
+                repeat = False
+            else:
+                print("Bad input. Try again")
+                user_input = input(message)
+                repeat = True
