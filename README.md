@@ -28,4 +28,7 @@ root                    (project root folder)
 
 ## Authors
 ---
-* Dhener Trinidad (decreo17)
+* Dhener Trinidad (decreo17) Game Structure, Logic & Testing
+  William Cameron Game Enhancement, Team & Meeting Coordination, Logic & Testing
+  Nikkolet Ashby Logic & Editing, Testing 
+  Ramon Salgado Game Enhancement, Testing , Editing
