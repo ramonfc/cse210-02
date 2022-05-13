@@ -128,7 +128,7 @@ class Dealer:
         print('Your current point total is ', self.points)
         minimum_bet = 75
         max_bet = self.points
-        self.risk = int(input('How many points would you like to risk? '))
+        self.risk = int(self.validateInput('How many points would you like to risk? ', '0123456789'))
         
         if self.risk >= minimum_bet:
             
